@@ -1,5 +1,4 @@
 # import threading
-
 import pygame
 from player import Player
 from client import Client
@@ -19,7 +18,7 @@ def draw():
             for ip in player_data:
                 player = json.loads(player_data[ip])
                 print(player)
-                pygame.draw.circle(window, (player["color"][0], player["color"][1], player["color"][2]), player["pos"], player["food_consumed"])
+                pygame.draw.circle(window, (player["color"][0], player["color"][1], player["color"][2]), (player["pos"][0] + 35, player["pos"][1] + 35), player["food_consumed"])
     except Exception as e:
         print(e)
 
