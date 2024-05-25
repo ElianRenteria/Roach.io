@@ -15,6 +15,8 @@ def draw():
     c.send_data(p.get_data())
     try:
         if c.game_state is not None:
+            if "\n" in c.game_state:
+                c.game_state = c.game_state.split("\n", 1)
             player_data = json.loads(c.game_state)
             for ip in player_data:
                 if ip != "food":
@@ -33,6 +35,7 @@ def draw():
                         pygame.draw.circle(window, (0, 0, 0), food, 5)
     except Exception as e:
         print(e)
+        print('hi')
 
 
 c = Client()

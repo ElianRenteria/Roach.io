@@ -18,12 +18,12 @@ def client_handler(addr, conn):
                 message, buffer = buffer.split("\n", 1)
                 allplayerdata[addr] = message
                 print(allplayerdata[addr])
-                #check_food_collision(addr)
+                check_food_collision(addr)
                 conn.send(json.dumps(allplayerdata).encode())
             else:
                 allplayerdata[addr] = data
                 print(allplayerdata[addr])
-                #check_food_collision(addr)
+                check_food_collision(addr)
                 conn.send(json.dumps(allplayerdata).encode())
         except Exception as e:
             del allplayerdata[addr]
@@ -36,21 +36,20 @@ def client_handler(addr, conn):
 def check_food_collision(addr):
     player = allplayerdata[addr]
     for food in foodList:
-        if player["pos"][0] <= food[0] and food[0] <= player["pos"][0]+player["food_collected"]:
-            if player["pos"][1] <= food[0] and food[1] <= player["pos"][1] + player["food_consumed"]:
+        if player["pos"][0]+12 <= food[0] and food[0] <= player["pos"][0]+player["food_collected"]+37:
+            if player["pos"][1]+12 <= food[0] and food[1] <= player["pos"][1] + player["food_consumed"]+37:
                 foodList.remove(food)
                 allplayerdata[addr]["food_consumed"] += 1
 
 def foodProduction():
-    global foodList
-    maxFood = 10
-    sleep(randint(2, 5))
-    if len(foodList) < maxFood:
-        foodList.append([randint(0, 790), randint(0, 590)])
-        allplayerdata['food'] = foodList
-
-def collisionCheck():
-    pass
+    while True:
+        global foodList
+        maxFood = 10
+        sleep(randint(2, 5))
+        if len(foodList) < maxFood:
+            foodList.append([randint(0, 790), randint(0, 590)])
+            allplayerdata['food'] = json.dumps(foodList)
+            print(foodList)
 
 def main():
     HOST = ''
@@ -65,9 +64,9 @@ def main():
             print(f"Connection Received from {addr}")
             allplayerdata[addr[0]] = {}
             client_thread = threading.Thread(target=client_handler, args=(addr[0], conn,))
-            #fp_thread = threading.Thread(target=foodProduction())
+            fp_thread = threading.Thread(target=foodProduction)
             client_thread.start()
-            #fp_thread.start()
+            fp_thread.start()
 
 
 if __name__ == "__main__":
