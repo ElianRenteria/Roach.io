@@ -8,7 +8,7 @@ class Client:
         port = 8188
         self.socket_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket_connection.connect((host, port))
-        self.ip = " "  # str(self.socket_connection.rev(1024).decode())
+        self.ip = str(socket.gethostbyname(socket.gethostname()))  # str(self.socket_connection.rev(1024).decode())
         self.game_state = None
         self.update_game_state_thread = threading.Thread(target=self.update_game_state)
         self.update_game_state_thread.start()

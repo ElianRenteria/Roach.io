@@ -8,6 +8,26 @@ allplayerdata = {}
 foodList = []
 
 
+def check_food_collision(addr):
+    global foodList, allplayerdata
+    try:
+        player = json.loads(allplayerdata[addr])
+        #print(str(player["pos"][0]+12)+ "<+" +" x " + "<=" +str(player["pos"][0]+37))
+        #print(str(player["pos"][1] + 12) + "<+" + " y " + "<=" + str(player["pos"][1] + 37))
+        #print(foodList)
+        for food in foodList:
+            if player["pos"][0]+12 <= food[0] and food[0] <= player["pos"][0]+40 and player["pos"][1] <= food[0]+12 and food[1] <= player["pos"][1]+40:
+                foodList.remove(food)
+                player["food_consumed"] = player["food_consumed"]+1
+                # print(player["food_consumed"])
+                allplayerdata[addr] = json.dumps(player)
+                allplayerdata["food"] = json.dumps(foodList)
+        allplayerdata[addr] = json.dumps(player)
+        allplayerdata["food"] = json.dumps(foodList)
+    except Exception as e:
+        print(e)
+        print("error with food checkr")
+
 def client_handler(addr, conn):
     while True:
         try:
@@ -17,12 +37,12 @@ def client_handler(addr, conn):
             if "\n" in buffer:
                 message, buffer = buffer.split("\n", 1)
                 allplayerdata[addr] = message
-                print(allplayerdata[addr])
+                #print(allplayerdata[addr])
                 check_food_collision(addr)
                 conn.send(json.dumps(allplayerdata).encode())
             else:
                 allplayerdata[addr] = data
-                print(allplayerdata[addr])
+                #print(allplayerdata[addr])
                 check_food_collision(addr)
                 conn.send(json.dumps(allplayerdata).encode())
         except Exception as e:
@@ -33,18 +53,12 @@ def client_handler(addr, conn):
 
 
 
-def check_food_collision(addr):
-    player = allplayerdata[addr]
-    for food in foodList:
-        if player["pos"][0]+12 <= food[0] and food[0] <= player["pos"][0]+player["food_collected"]+37:
-            if player["pos"][1]+12 <= food[0] and food[1] <= player["pos"][1] + player["food_consumed"]+37:
-                foodList.remove(food)
-                allplayerdata[addr]["food_consumed"] += 1
+
 
 def foodProduction():
     while True:
         global foodList
-        maxFood = 10
+        maxFood = 1
         sleep(randint(2, 5))
         if len(foodList) < maxFood:
             foodList.append([randint(0, 790), randint(0, 590)])

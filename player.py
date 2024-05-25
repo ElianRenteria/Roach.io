@@ -24,15 +24,15 @@ class Player:
     def move(self):
         userinput = pygame.key.get_pressed()
         if userinput[pygame.K_d] and self.x < 750:
-            self.x += 1
+            self.x += int(3 * 0.95 ** self.food_consumed)
             self.sprite = pygame.transform.rotate(self.image, 320)
             self.direction = 320
         if userinput[pygame.K_a] and self.x > 0:
-            self.x -= 1
+            self.x -= int(3 * 0.95 ** self.food_consumed)
             self.sprite = pygame.transform.rotate(self.image, 140)
             self.direction = 140
         if userinput[pygame.K_s] and self.y < 550:
-            self.y += 1
+            self.y += int(3 * 0.95 ** self.food_consumed)
             if userinput[pygame.K_a]:
                 self.sprite = pygame.transform.rotate(self.image, 180)
                 self.direction = 180
@@ -43,7 +43,7 @@ class Player:
                 self.sprite = pygame.transform.rotate(self.image, 230)
                 self.direction = 230
         if userinput[pygame.K_w] and self.y > 0:
-            self.y -= 1
+            self.y -= int(3 * 0.95 ** self.food_consumed)
             if userinput[pygame.K_a]:
                 self.sprite = pygame.transform.rotate(self.image, 90)
                 self.direction = 90
