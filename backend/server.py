@@ -15,18 +15,23 @@ def check_food_collision(addr):
         #print(str(player["pos"][0]+12)+ "<+" +" x " + "<=" +str(player["pos"][0]+37))
         #print(str(player["pos"][1] + 12) + "<+" + " y " + "<=" + str(player["pos"][1] + 37))
         #print(foodList)
+        #print(player['pos'])
         for food in foodList:
-            if player["pos"][0]+12 <= food[0] and food[0] <= player["pos"][0]+40 and player["pos"][1] <= food[0]+12 and food[1] <= player["pos"][1]+40:
+            if player["pos"][0]+12 <= food[0] and food[0] <= player["pos"][0]+40 and player["pos"][1]+12 <= food[1] and food[1] <= player["pos"][1]+40:
                 foodList.remove(food)
                 player["food_consumed"] = player["food_consumed"]+1
+                print(player['food_consumed'])
                 # print(player["food_consumed"])
                 allplayerdata[addr] = json.dumps(player)
                 allplayerdata["food"] = json.dumps(foodList)
-        allplayerdata[addr] = json.dumps(player)
-        allplayerdata["food"] = json.dumps(foodList)
+                break
+            else:
+                pass
+                #print(f"x: {player['pos'][0] + 12} < {food[0]} < {player['pos'][0] + 40}")
+                #print(f"y: {player['pos'][1] + 12} < {food[1]} < {player['pos'][1] + 40}")
     except Exception as e:
         print(e)
-        print("error with food checkr")
+        print("error with food checker")
 
 def client_handler(addr, conn):
     while True:
@@ -51,14 +56,10 @@ def client_handler(addr, conn):
             conn.close()
             break
 
-
-
-
-
 def foodProduction():
     while True:
         global foodList
-        maxFood = 1
+        maxFood = 10
         sleep(randint(2, 5))
         if len(foodList) < maxFood:
             foodList.append([randint(0, 790), randint(0, 590)])

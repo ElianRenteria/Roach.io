@@ -4,11 +4,12 @@ import threading
 
 class Client:
     def __init__(self):
-        host = "192.168.1.43"
+        host = "192.168.86.194"
         port = 8188
         self.socket_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket_connection.connect((host, port))
-        self.ip = str(socket.gethostbyname(socket.gethostname()))  # str(self.socket_connection.rev(1024).decode())
+        self.ip = str(socket.gethostbyname(socket.gethostname()))
+        print(self.ip)
         self.game_state = None
         self.update_game_state_thread = threading.Thread(target=self.update_game_state)
         self.update_game_state_thread.start()
@@ -21,7 +22,7 @@ class Client:
                 if not data:
                     print("Server Disconnected")
                     self.socket_connection.close()
-                print(data.decode())
+                #print(data.decode())
         except Exception as e:
             print(e)
             print("Server Error")

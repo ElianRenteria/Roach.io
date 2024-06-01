@@ -24,8 +24,9 @@ def draw():
                     try:
                         if ip == p.ip:
                             p.food_consumed = player["food_consumed"]
+                            print(p.food_consumed)
                     except:
-                        print("error updateing food consumed")
+                        print("error updating food consumed")
                     # print(player)
                     # pygame.draw.circle(window, (player["color"][0], player["color"][1], player["color"][2]), player["pos"], player["food_consumed"])
                     # pygame.draw.rect(window, (255, 0, 0), pygame.Rect(player["pos"][0]+12, player["pos"][1]+12, 25, 25), 2)
