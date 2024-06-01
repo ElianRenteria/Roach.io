@@ -4,7 +4,7 @@ import threading
 
 class Client:
     def __init__(self):
-        host = "68.7.149.165"
+        host = "24.144.85.169"
         port = 8188
         self.socket_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket_connection.connect((host, port))
@@ -15,14 +15,17 @@ class Client:
         self.update_game_state_thread.start()
 
     def update_game_state(self):
+        buffer = ""
         try:
             while True:
-                data = self.socket_connection.recv(1024)
-                self.game_state = data.decode()
-                if not data:
-                    print("Server Disconnected")
-                    self.socket_connection.close()
-                #print(data.decode())
+                data = self.socket_connection.recv(1024).decode()
+                buffer += data
+                while "\n" in buffer:
+                    message, buffer = buffer.split("\n", 1)
+                    self.game_state = message
+                    if not data:
+                        print("Server Disconnected")
+                        self.socket_connection.close()
         except Exception as e:
             print(e)
             print("Server Error")

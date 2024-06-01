@@ -42,19 +42,18 @@ def client_handler(addr, conn):
             if "\n" in buffer:
                 message, buffer = buffer.split("\n", 1)
                 allplayerdata[addr] = message
-                #print(allplayerdata[addr])
                 check_food_collision(addr)
-                conn.send(json.dumps(allplayerdata).encode())
+                conn.send((json.dumps(allplayerdata) + "\n").encode())
             else:
                 allplayerdata[addr] = data
-                #print(allplayerdata[addr])
                 check_food_collision(addr)
-                conn.send(json.dumps(allplayerdata).encode())
+                conn.send((json.dumps(allplayerdata) + "\n").encode())
         except Exception as e:
             del allplayerdata[addr]
             print(addr + ' has disconnected')
             conn.close()
             break
+
 
 def foodProduction():
     while True:
