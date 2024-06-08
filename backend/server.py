@@ -17,7 +17,7 @@ def check_food_collision(addr):
         #print(foodList)
         #print(player['pos'])
         for food in foodList:
-            if player["pos"][0]+12 <= food[0] and food[0] <= player["pos"][0]+40 and player["pos"][1]+12 <= food[1] and food[1] <= player["pos"][1]+40:
+            if player["pos"][0]+12 <= food[0] and food[0] <= player["pos"][0]+40+player["food_consumed"] and player["pos"][1]+12 <= food[1] and food[1] <= player["pos"][1]+40+player["food_consumed"]:
                 foodList.remove(food)
                 player["food_consumed"] = player["food_consumed"]+1
                 print(player['food_consumed'])
@@ -62,7 +62,7 @@ def foodProduction():
         maxFood = 10
         sleep(randint(2, 5))
         if len(foodList) < maxFood:
-            foodList.append([randint(0, 790), randint(0, 590)])
+            foodList.append([randint(10, 790), randint(10, 590)])
             allplayerdata['food'] = json.dumps(foodList)
             print(foodList)
 
