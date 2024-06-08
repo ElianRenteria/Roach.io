@@ -4,7 +4,10 @@ import threading
 
 class Client:
     def __init__(self):
-        host = "24.144.85.169"
+
+        #cloud server: 24.144.85.169
+        host = "192.168.1.28"
+
         port = 8188
         self.socket_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket_connection.connect((host, port))
